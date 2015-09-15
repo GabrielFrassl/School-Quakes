@@ -1,0 +1,1 @@
+Eine Random readme die ich zum testen von GIT DESKTOP verwendet habe
