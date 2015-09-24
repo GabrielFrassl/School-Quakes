@@ -16,11 +16,10 @@ LASTENHEFT:
 ------------------------------------------------------------------------------------------
 Borsos:
 Einführung, Produkteinsatz, Zielbestimmung(Was soll mit dem Projekt erreicht werden?
-Messbarkeit!).
+Messbarkeit!)
+Zusatz: Produktleistungen/ Qualitätsanforderungen
 
-Limbeck:
-Produktleistungen (Welche Leistungen (Qualitäten) soll das Projekt liefern?)
-Produktdaten (Welche Daten (Entitäten) werden für das Projekt benötigt?)
+Limbeck:Produktdaten/Zwingende Randbedingungen/ Vertragsgegenstand
 
 Frassl
 Produktfunktionen (Welche Anforderungen soll das Projekt leisten?
