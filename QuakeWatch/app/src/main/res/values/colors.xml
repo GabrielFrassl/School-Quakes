@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ColorPrimary">#2196F3</color>
-    <color name="ColorPrimaryDark">#1976D2</color>
-    <color name="ColorSlidingTab">#2196F3</color>
-    <color name="tabsScrollColor">#FF5252</color>
-    <color name="Font">#000000</color>
-    <color name="newQuakeBackground">#FF5252</color>
-    <color name="LoadingScreen">#5d6e7e</color>
-    <color name="ItemsButtonsEtc">#FF5252</color>
+    <color name="ColorPrimary">#2d3e50</color>
+    <color name="ColorPrimaryDark">#25384b</color>
+    <color name="ColorSlidingTab">#5d6e7e</color>
+    <color name="tabsScrollColor">#2f5f87</color>
 </resources>

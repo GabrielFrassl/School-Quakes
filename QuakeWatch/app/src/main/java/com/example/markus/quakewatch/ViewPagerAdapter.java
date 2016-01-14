@@ -24,18 +24,28 @@ public class ViewPagerAdapter extends FragmentStatePagerAdapter {
     //This method return the fragment for the every position in the View Pager
     @Override
     public Fragment getItem(int position) {
-        if(position == 3)
-        {
-            Website wv = new Website();
-            return wv;
 
-        }
-        else
+        if(position == 0) // if the position is 0 we are returning the First tab
         {
-        RecyclerView1 recyclerView1 = new RecyclerView1();
-            recyclerView1.setnumber(position);
+            RecyclerView1 recyclerView1 = new RecyclerView1();
             return recyclerView1;
         }
+        else if(position == 1)            // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+        {
+             RecyclerView1 tab2 = new RecyclerView1();
+             return tab2;
+        }
+        else if(position == 2)             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+        {
+            RecyclerView1 tab3 = new RecyclerView1();
+            return tab3;
+        }
+        else             // As we are having 2 tabs if the position is now 0 it must be 1 so we are returning second tab
+        {
+            Search tab4 = new Search();
+            return tab4;
+        }
+
 
     }
 

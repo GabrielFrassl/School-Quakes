@@ -6,12 +6,15 @@
 
     tools:context=".MainActivity">
 
+
+
     <include
         android:id="@+id/tool_bar"
         layout="@layout/tool_bar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        />
+        ></include>
+
 
 
 
@@ -30,98 +33,9 @@
         android:layout_width="match_parent"
         android:layout_below="@id/tabs"
         android:layout_weight="1"
-        />
-
-    <ImageButton
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:src="@drawable/ic_action"
-        android:background="@drawable/circle"
-        android:id="@+id/imageButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp" />
-
-    <SurfaceView
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:id="@+id/surfaceView"
-        android:background="@color/ColorPrimary"
-        android:layout_alignParentBottom="true"
-        android:backgroundTintMode="multiply"
-        android:visibility="invisible"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        ></android.support.v4.view.ViewPager>
 
 
-
-    <TextView
-        android:height="40dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Wann haben Sie das Beben verspührt ?"
-        android:id="@+id/TextView"
-        android:gravity="center_horizontal|center_vertical"
-        android:textSize="35sp"
-        android:textColor="@color/Font"
-        android:visibility="invisible"
-        android:layout_alignTop="@+id/surfaceView" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/TextView"
-        android:layout_marginBottom="10dp"
-        android:weightSum="2">
-
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-
-            android:text="vor 30 min"
-            android:id="@+id/button1"
-            android:textSize="25sp"
-            android:visibility="invisible"
-            android:layout_weight="0.9"
-            android:background="@drawable/mybutton"
-            android:layout_above="@+id/TextView"/>
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="jetzt"
-            android:textSize="25sp"
-            android:id="@+id/buttontemp"
-            android:visibility="invisible"
-            android:layout_weight="0.2"
-            android:background="@drawable/mybutton"
-            />
-        <Button
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="jetzt"
-            android:textSize="25sp"
-            android:id="@+id/button2"
-            android:visibility="invisible"
-            android:layout_weight="0.9"
-            android:background="@drawable/mybutton"
-            android:layout_above="@+id/TextView"
-            />
-    </LinearLayout>
-
-
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text=""
-        android:id="@+id/button3"
-        android:visibility="invisible"
-        android:layout_above="@id/surfaceView"/>
 
 </RelativeLayout>
  
