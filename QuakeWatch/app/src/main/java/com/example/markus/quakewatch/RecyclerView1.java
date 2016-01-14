@@ -15,21 +15,30 @@ package com.example.markus.quakewatch;
 * limitations under the License.
 */
 
-        import android.os.Bundle;
-        import android.support.v4.app.Fragment;
-        import android.support.v7.widget.GridLayoutManager;
-        import android.support.v7.widget.LinearLayoutManager;
-        import android.support.v7.widget.RecyclerView;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.RadioButton;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-        import org.json.JSONArray;
-        import org.json.JSONObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-        import java.util.ArrayList;
-        import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Demonstrates the use of {@link RecyclerView} with a {@link LinearLayoutManager} and a
@@ -38,8 +47,16 @@ package com.example.markus.quakewatch;
 public class RecyclerView1 extends Fragment
 {
     protected RecyclerView mRecyclerView;
-    protected CustomAdapter mAdapter;
+    protected CardViewAdapter mAdapter;
+    protected int number;
     protected RecyclerView.LayoutManager mLayoutManager;
+    List<Beben> Werte = new ArrayList<Beben>();
+    //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+    public void setnumber(int i) {
+        number = i;
+        HttpRequest http = new HttpRequest();
+        http.execute();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,51 +64,151 @@ public class RecyclerView1 extends Fragment
 
     }
 
+
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-         View rootView = inflater.inflate(R.layout.recycler_view, container, false);
+        //StrictMode.setThreadPolicy(policy);
+        View rootView = inflater.inflate(R.layout.recycler_view, container, false);
 
 
-         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.cardList);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.cardList);
+
 
         // LinearLayoutManager is used here, this will layout the elements in a similar fashion
         // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
         // elements are laid out.
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new ScrollManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        //List<Beben> contactList2 = new ArrayList<Beben>();
 
-        List<ContactInfo> contactList = new ArrayList<ContactInfo>();
-        contactList = test();
+        mRecyclerView.addOnItemTouchListener(new RecyclerClickListener(getContext(), new RecyclerClickListener.OnItemClickListener(){
+                    @Override public void onItemClick(View view, int position)
+                    {
 
-        mAdapter = new CustomAdapter(contactList);
-        // Set CustomAdapter as the adapter for RecyclerView.
-        mRecyclerView.setAdapter(mAdapter);
+
+                        Beben wert = Werte.get(position);
+                        String[] time = wert.time.split(":");
+                        String[] date = wert.date.split("-");
+                        Senden.hour = Integer.parseInt(time[0]);
+                        Senden.minute = Integer.parseInt(time[1]);
+                        Senden.ort = wert.ort;
+                        Senden.mag = Double.parseDouble(wert.starke);
+                        Senden.year = Integer.parseInt(date[0]);
+                        Senden.month = Integer.parseInt(date[1]);
+                        Senden.day = Integer.parseInt(date[2]);
+                        Senden.koordinaten = wert.koordinaten;
+                        Senden.zeitzone = wert.zeitzone;
+                        Senden.zentrum = wert.zenturm;
+                        Senden.tiefe = Double.parseDouble(wert.tiefe);
+                        Senden.id = Integer.parseInt(wert.id);
+                        System.out.println(Senden.id);
+
+                        Intent intent = new Intent(getActivity(), Detail.class);
+                        startActivity(intent);
+                    }
+                })
+        );
+
+
+        //mAdapter = new CardViewAdapter(contactList2);
+        // Set CardViewAdapter as the adapter for RecyclerView.
+        //mRecyclerView.setAdapter(mAdapter);
         return rootView;
     }
-    public List<ContactInfo> test()
+    private class HttpRequest extends AsyncTask<String,Void, List<Beben>>
     {
-        List<ContactInfo> contactList = new ArrayList<ContactInfo>();
-        try {
-            JSONObject json = new JSONObject("{\"type\":\"FeatureCollection\",\"metadata\":{\"totalCount\":595668},\"features\":[{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       27.5,        36.81,        -6.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000066\",    \"properties\": {     \"lastupdate\": \"2015-11-19T11:07:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": 27.5,      \"auth\": \"ISK\",      \"lat\": 36.81,      \"depth\": 6.0,      \"unid\": \"20151119_0000066\",      \"mag\": 2.7,      \"time\": \"2015-11-19T11:00:58.4Z\",      \"source_id\": \"471003\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"DODECANESE IS.-TURKEY BORDER REG\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       8.17,        47.55,        -1.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000063\",    \"properties\": {     \"lastupdate\": \"2015-11-19T10:50:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": 8.17,      \"auth\": \"ZUR\",      \"lat\": 47.55,      \"depth\": 1.0,      \"unid\": \"20151119_0000063\",      \"mag\": 1.6,      \"time\": \"2015-11-19T10:43:05.2Z\",      \"source_id\": \"470997\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"SWITZERLAND\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       -121.25,        36.64,        -5.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000061\",    \"properties\": {     \"lastupdate\": \"2015-11-19T10:40:00.0Z\",      \"magtype\": \"md\",      \"evtype\": \"ke\",      \"lon\": -121.25,      \"auth\": \"NC\",      \"lat\": 36.64,      \"depth\": 5.0,      \"unid\": \"20151119_0000061\",      \"mag\": 2.7,      \"time\": \"2015-11-19T10:38:15.6Z\",      \"source_id\": \"470993\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"CENTRAL CALIFORNIA\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       39.34,        36.87,        -11.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000064\",    \"properties\": {     \"lastupdate\": \"2015-11-19T10:54:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": 39.34,      \"auth\": \"ISK\",      \"lat\": 36.87,      \"depth\": 11.0,      \"unid\": \"20151119_0000064\",      \"mag\": 2.1,      \"time\": \"2015-11-19T09:56:43.7Z\",      \"source_id\": \"470999\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"TURKEY-SYRIA BORDER REGION\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       42.47,        36.35,        -6.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000065\",    \"properties\": {     \"lastupdate\": \"2015-11-19T10:57:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": 42.47,      \"auth\": \"ISK\",      \"lat\": 36.35,      \"depth\": 6.0,      \"unid\": \"20151119_0000065\",      \"mag\": 2.8,      \"time\": \"2015-11-19T09:50:32.2Z\",      \"source_id\": \"471000\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"IRAQ\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       -98.43,        36.64,        -3.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000057\",    \"properties\": {     \"lastupdate\": \"2015-11-19T09:59:00.0Z\",      \"magtype\": \"mb\",      \"evtype\": \"ke\",      \"lon\": -98.43,      \"auth\": \"NEIC\",      \"lat\": 36.64,      \"depth\": 3.0,      \"unid\": \"20151119_0000057\",      \"mag\": 3.1,      \"time\": \"2015-11-19T09:46:22.2Z\",      \"source_id\": \"470984\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"OKLAHOMA\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       -70.36,        -20.16,        -36.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000056\",    \"properties\": {     \"lastupdate\": \"2015-11-19T09:56:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": -70.36,      \"auth\": \"GUC\",      \"lat\": -20.16,      \"depth\": 36.0,      \"unid\": \"20151119_0000056\",      \"mag\": 3.1,      \"time\": \"2015-11-19T09:44:44.0Z\",      \"source_id\": \"470983\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"OFFSHORE TARAPACA, CHILE\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       13.89,        37.72,        -35.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000059\",    \"properties\": {     \"lastupdate\": \"2015-11-19T10:04:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": 13.89,      \"auth\": \"ROM\",      \"lat\": 37.72,      \"depth\": 35.0,      \"unid\": \"20151119_0000059\",      \"mag\": 3.1,      \"time\": \"2015-11-19T09:43:37.5Z\",      \"source_id\": \"470986\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"SICILY, ITALY\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       141.21,        37.7,        -65.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000051\",    \"properties\": {     \"lastupdate\": \"2015-11-19T11:06:00.0Z\",      \"magtype\": \"mb\",      \"evtype\": \"ke\",      \"lon\": 141.21,      \"auth\": \"EMSC\",      \"lat\": 37.7,      \"depth\": 65.0,      \"unid\": \"20151119_0000051\",      \"mag\": 4.9,      \"time\": \"2015-11-19T09:33:04.5Z\",      \"source_id\": \"470976\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"NEAR EAST COAST OF HONSHU, JAPAN\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       31.55,        40.28,        -5.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000048\",    \"properties\": {     \"lastupdate\": \"2015-11-19T08:52:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": 31.55,      \"auth\": \"ISK\",      \"lat\": 40.28,      \"depth\": 5.0,      \"unid\": \"20151119_0000048\",      \"mag\": 2.0,      \"time\": \"2015-11-19T08:24:03.4Z\",      \"source_id\": \"470967\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"WESTERN TURKEY\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       20.5,        38.5,        -10.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000047\",    \"properties\": {     \"lastupdate\": \"2015-11-19T08:44:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": 20.5,      \"auth\": \"THE\",      \"lat\": 38.5,      \"depth\": 10.0,      \"unid\": \"20151119_0000047\",      \"mag\": 3.0,      \"time\": \"2015-11-19T08:23:42.0Z\",      \"source_id\": \"470966\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"GREECE\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       123.96,        6.47,        -567.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000045\",    \"properties\": {     \"lastupdate\": \"2015-11-19T08:39:00.0Z\",      \"magtype\": \"mb\",      \"evtype\": \"ke\",      \"lon\": 123.96,      \"auth\": \"EMSC\",      \"lat\": 6.47,      \"depth\": 567.0,      \"unid\": \"20151119_0000045\",      \"mag\": 4.4,      \"time\": \"2015-11-19T08:04:19.7Z\",      \"source_id\": \"470963\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"MORO GULF, MINDANAO, PHILIPPINES\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       -122.45,        46.25,        -20.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000044\",    \"properties\": {     \"lastupdate\": \"2015-11-19T08:06:00.0Z\",      \"magtype\": \"md\",      \"evtype\": \"ke\",      \"lon\": -122.45,      \"auth\": \"NEIR\",      \"lat\": 46.25,      \"depth\": 20.0,      \"unid\": \"20151119_0000044\",      \"mag\": 2.7,      \"time\": \"2015-11-19T08:02:30.5Z\",      \"source_id\": \"470961\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"WASHINGTON\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       -71.84,        -30.39,        -32.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000043\",    \"properties\": {     \"lastupdate\": \"2015-11-19T08:04:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": -71.84,      \"auth\": \"GUC\",      \"lat\": -30.39,      \"depth\": 32.0,      \"unid\": \"20151119_0000043\",      \"mag\": 4.4,      \"time\": \"2015-11-19T07:47:29.0Z\",      \"source_id\": \"470960\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"OFFSHORE COQUIMBO, CHILE\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       -98.39,        36.67,        -2.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000042\",    \"properties\": {     \"lastupdate\": \"2015-11-19T08:56:00.0Z\",      \"magtype\": \"mw\",      \"evtype\": \"ke\",      \"lon\": -98.39,      \"auth\": \"EMSC\",      \"lat\": 36.67,      \"depth\": 2.0,      \"unid\": \"20151119_0000042\",      \"mag\": 4.7,      \"time\": \"2015-11-19T07:42:11.3Z\",      \"source_id\": \"470957\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"OKLAHOMA\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       -66.67,        -22.62,        -209.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000040\",    \"properties\": {     \"lastupdate\": \"2015-11-19T08:10:00.0Z\",      \"magtype\": \"mb\",      \"evtype\": \"ke\",      \"lon\": -66.67,      \"auth\": \"EMSC\",      \"lat\": -22.62,      \"depth\": 209.0,      \"unid\": \"20151119_0000040\",      \"mag\": 5.0,      \"time\": \"2015-11-19T07:40:25.5Z\",      \"source_id\": \"470956\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"JUJUY, ARGENTINA\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       -73.97,        5.66,        -113.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000041\",    \"properties\": {     \"lastupdate\": \"2015-11-19T07:53:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": -73.97,      \"auth\": \"RSNC\",      \"lat\": 5.66,      \"depth\": 113.0,      \"unid\": \"20151119_0000041\",      \"mag\": 2.0,      \"time\": \"2015-11-19T07:39:18.0Z\",      \"source_id\": \"470959\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"COLOMBIA\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       20.59,        38.73,        -1.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000046\",    \"properties\": {     \"lastupdate\": \"2015-11-19T08:32:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": 20.59,      \"auth\": \"THE\",      \"lat\": 38.73,      \"depth\": 1.0,      \"unid\": \"20151119_0000046\",      \"mag\": 2.9,      \"time\": \"2015-11-19T07:38:30.8Z\",      \"source_id\": \"470955\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"GREECE\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       35.31,        40.17,        -5.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000039\",    \"properties\": {     \"lastupdate\": \"2015-11-19T07:43:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": 35.31,      \"auth\": \"ISK\",      \"lat\": 40.17,      \"depth\": 5.0,      \"unid\": \"20151119_0000039\",      \"mag\": 2.4,      \"time\": \"2015-11-19T07:03:50.0Z\",      \"source_id\": \"470954\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"CENTRAL TURKEY\"   } },{   \"geometry\": {     \"type\": \"Point\",      \"coordinates\": [       20.58,        38.77,        -6.0     ]   },    \"type\": \"Feature\",    \"id\": \"20151119_0000062\",    \"properties\": {     \"lastupdate\": \"2015-11-19T10:48:00.0Z\",      \"magtype\": \"ml\",      \"evtype\": \"ke\",      \"lon\": 20.58,      \"auth\": \"THE\",      \"lat\": 38.77,      \"depth\": 6.0,      \"unid\": \"20151119_0000062\",      \"mag\": 2.7,      \"time\": \"2015-11-19T07:00:42.5Z\",      \"source_id\": \"470950\",      \"source_catalog\": \"EMSC-RTS\",      \"flynn_region\": \"GREECE\"   } }]}");
-            JSONArray j = json.getJSONArray("features");
-             for(int i = 0; i < j.length(); i++)
-             {
-                 JSONObject c = j.getJSONObject(i);
-                 JSONObject b = c.getJSONObject("properties");
-                 String[] td = b.getString("time").split("T");
-                 ContactInfo test = new ContactInfo(b.getString("flynn_region"),td[1],td[0],b.getString("mag"));
-                 contactList.add(test);
-             }
+        protected List<Beben> doInBackground(String... param) {
 
-        }catch(Exception e)
-        {
-          e.printStackTrace();
+            return test(number);
         }
-          return contactList;
-      }
+        protected void onPostExecute(List<Beben> result)
+        {
+            mAdapter =  new CardViewAdapter(result);
+            Werte = result;
+            mRecyclerView.setAdapter(mAdapter);
+
+        }
+        public List<Beben> test(int zahl)
+        {
+            List<Beben> contactList = new ArrayList<Beben>();
+            try {
+                JSONObject json = null;
+                switch(zahl)
+                {
+                    case 0:
+                        json = readJsonFromUrl("http://geoweb.zamg.ac.at/fdsnws/app/1/query?location=austria&limit=25&orderby=time");
+                        break;
+                    case 1:
+                        json = readJsonFromUrl("http://geoweb.zamg.ac.at/fdsnws/app/1/query?location=europa&limit=25&orderby=time");
+                        break;
+                    case 2:
+                        json = readJsonFromUrl("http://geoweb.zamg.ac.at/fdsnws/app/1/query?location=welt&limit=25&orderby=time");
+                        break;
+
+                }
+                JSONArray j = json.getJSONArray("features");
+                for(int i = 0; i < j.length(); i++)
+                {
+                    JSONObject c = j.getJSONObject(i);
+                    JSONObject b = c.getJSONObject("properties");
+                    String[] td = b.getString("time").split("T");
+                    String time = td[1].substring(0, td[1].indexOf('.'));
+                    String ort = b.getString("region");
+                    String zeitzone = b.getString("timezone");
+                    String zenturm = b.getString("epicenter");
+                    String tiefe = b.getString("depth");
+                    JSONObject d = c.getJSONObject("geometry");
+                    String koordinaten = d.getString("coordinates");
+                    if(ort.length() >= 30)
+                        ort = b.getString("region").substring(0, 30) + "...";
+                    double mag = b.getDouble("mag");
+
+                    String id = "0";
+                    if(zahl == 0)
+                        id = c.getString("id");
+
+                        Beben test = new Beben(ort, time,td[0], String.valueOf(mag), koordinaten, zeitzone, zenturm, tiefe, id);
+                        contactList.add(test);
+                }
+            }catch(Exception e)
+            {
+                e.printStackTrace();
+            }
+            return contactList;
+        }
 
 
+        private JSONObject readJsonFromUrl(String url) throws IOException, JSONException
+        {
+            InputStream is = new URL(url).openStream();
+            try
+            {
+                BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+                String jsonText = readAll(rd);
+                JSONObject json = new JSONObject(jsonText);
+                return json;
+            }
+            finally
+            {
+                is.close();
+            }
+        }
+        private String readAll(Reader rd) throws IOException
+        {
+            StringBuilder sb = new StringBuilder();
+            int cp;
 
+            while ((cp = rd.read()) != -1)
+            {
+                sb.append((char) cp);
+            }
+            return sb.toString();
+        }
+
+
+    }
 
 }

@@ -1,0 +1,354 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.markus.quakewatch.Detail">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/tool_bar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        />
+
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view1"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        card_view:cardCornerRadius="4dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/tool_bar">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            >
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:gravity="center_vertical"
+                android:src="@drawable/button_red"
+                android:id="@+id/button1"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:id="@+id/starke"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:gravity="center"
+                android:text="0.0"
+                android:textSize="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true" />
+
+            <TextView
+                android:id="@+id/location"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Location"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@+id/button1"
+                android:layout_toRightOf="@+id/button1"
+                android:layout_toEndOf="@+id/button1" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Beben verspürt"
+        android:id="@+id/beben"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+    <android.support.v7.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/card_view2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        card_view:cardCornerRadius="4dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@id/card_view1"
+        android:layout_above="@id/beben">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            >
+
+            <ImageView
+                android:src="@drawable/ort"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/coordinates"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Koordinaten:"
+                android:id="@+id/coordinatestext"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/coordinates"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Wert"
+                android:id="@+id/coordinateswert"
+                android:layout_alignParentTop="true"
+                android:layout_toRightOf="@+id/coordinatestext"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp" />
+
+
+
+            <ImageView
+                android:src="@drawable/datum"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/date"
+                android:layout_below="@+id/coordinates"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Datum:"
+                android:id="@+id/datetext"
+                android:layout_below="@+id/coordinatestext"
+                android:layout_toRightOf="@+id/date"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Wert"
+                android:id="@+id/datewert"
+                android:layout_below="@+id/coordinateswert"
+                android:layout_toRightOf="@+id/datetext"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <ImageView
+                android:src="@drawable/staerke"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/stärke"
+                android:layout_below="@+id/date"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Stärke:"
+                android:id="@+id/stärketext"
+                android:layout_below="@+id/datetext"
+                android:layout_toRightOf="@+id/stärke"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Wert"
+                android:id="@+id/stärkewert"
+                android:layout_below="@+id/datewert"
+                android:layout_toRightOf="@+id/stärketext"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <ImageView
+                android:src="@drawable/weltzeit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/zeitzone"
+                android:layout_below="@+id/stärke"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Zeitzone:"
+                android:id="@+id/zeitzonetext"
+                android:layout_below="@+id/stärketext"
+                android:layout_toRightOf="@+id/zeitzone"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Wert"
+                android:id="@+id/zeitzonewert"
+                android:layout_below="@+id/stärkewert"
+                android:layout_toRightOf="@+id/zeitzonetext"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+
+            <ImageView
+                android:src="@drawable/zeit"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/zeit"
+                android:layout_below="@+id/zeitzone"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Zeit:"
+                android:id="@+id/zeittext"
+                android:layout_below="@+id/zeitzonetext"
+                android:layout_toRightOf="@+id/zeit"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Wert"
+                android:id="@+id/zeitwert"
+                android:layout_below="@+id/zeitzonewert"
+                android:layout_toRightOf="@+id/zeittext"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+
+            <ImageView
+                android:src="@drawable/zentrum"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/epizentrum"
+                android:layout_below="@+id/zeit"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Epizentrum:"
+                android:id="@+id/epizentrumtext"
+                android:layout_below="@+id/zeittext"
+                android:layout_toRightOf="@+id/epizentrum"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Wert"
+                android:id="@+id/epizentrumwert"
+                android:layout_below="@+id/zeitwert"
+                android:layout_toRightOf="@+id/epizentrumtext"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+
+            <ImageView
+                android:src="@drawable/tiefeicon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/tiefe"
+                android:layout_below="@+id/epizentrum"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="10dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Tiefe:"
+                android:id="@+id/tiefetext"
+                android:layout_below="@+id/epizentrum"
+                android:layout_toRightOf="@+id/date"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Wert"
+                android:id="@+id/tiefewert"
+                android:layout_below="@+id/epizentrumtext"
+                android:layout_toRightOf="@+id/tiefetext"
+                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+
+
+
+</RelativeLayout>
